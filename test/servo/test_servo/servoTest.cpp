@@ -1,19 +1,26 @@
 #include "unity.h"
 #include <Arduino.h>
-#include <Servo.h>
+#include <ESP32Servo.h>
 
 Servo testServo;
-void  testServoAttach()
+
+#define SERVO_PIN 14
+
+void testServoAttach()
 {
-  testServo.attach(14);
-  TEST_ASSERT_TRUE_MESSAGE(testServo.attached(), "Servo is not attached to pin 14");
+  ESP32PWM::allocateTimer(0);
+  testServo.setPeriodHertz(50);           // standard 50 hz servo
+  testServo.attach(SERVO_PIN, 500, 2500); // attaches the servo on pin 14 to the servo object
+  String msg = "Servo is not attached to pin " + String(SERVO_PIN);
+  TEST_ASSERT_TRUE_MESSAGE(testServo.attached(), msg.c_str());
 }
 
 void testServoRead()
 {
   int angle = testServo.read();
-  TEST_ASSERT_TRUE_MESSAGE((angle >= 0 && angle <= 189),
-                           "Servo angle read is not between 0 and 189 degrees");
+  Serial.printf("Angle: %d\n", angle);
+  TEST_ASSERT_TRUE_MESSAGE((angle >= 0 && angle <= 180),
+                           "Servo angle read is not between 0 and 180 degrees");
 }
 
 void testServoWrite()
@@ -31,6 +38,7 @@ void setup()
   RUN_TEST(testServoAttach);
   RUN_TEST(testServoRead);
   RUN_TEST(testServoWrite);
+
   UNITY_END();
   delay(1000); // Delay to avoid spamming
 }
