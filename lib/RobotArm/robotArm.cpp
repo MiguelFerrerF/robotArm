@@ -1,5 +1,6 @@
 
 #include "robotArm.h"
+#include <ctype.h>
 
 RobotArm::RobotArm()
 {
@@ -59,9 +60,17 @@ void RobotArm::serialTask(void* pvParameters)
 
   while (true) {
     if (Serial.available()) {
-      char cmd[READ_BUFFER_SIZE] = {0}; // Inicializar el buffer para evitar residuos
+      char cmd[READ_BUFFER_SIZE] = {0};
       Serial.readBytesUntil('\n', cmd, sizeof(cmd));
       cmd[READ_BUFFER_SIZE - 1] = '\0'; // Asegurar terminación de cadena
+      int len                   = strlen(cmd);
+      while (len > 0 && (cmd[len - 1] == '\r' || cmd[len - 1] == '\n' || cmd[len - 1] == ' ')) {
+        cmd[len - 1] = '\0';
+        len--;
+      }
+      for (int i = 0; i < len; i++) {
+        cmd[i] = toupper((unsigned char)cmd[i]);
+      }
       if (xQueueSend(self->_commandQueue, &cmd, portMAX_DELAY) != pdPASS) {
         Serial.println("[ERROR] Failed to enqueue command.");
       }
@@ -77,23 +86,23 @@ void RobotArm::processCommandTask(void* pvParameters)
   char      cmd[READ_BUFFER_SIZE];
   while (true) {
     if (xQueueReceive(self->_commandQueue, &cmd, portMAX_DELAY) == pdPASS) {
-      char action[10], param_one[50], param_two[50], param_three[50];
+      char action[10] = {0}, param_one[50] = {0}, param_two[50] = {0}, param_three[50] = {0};
       sscanf(cmd, "%9[^:]:%49[^:]:%49[^:]:%49s", action, param_one, param_two, param_three);
       if (strcmp(action, SETUP) == 0 && strlen(param_one) > 0 && strlen(param_two) > 0 &&
           strlen(param_three) == 0) {
-        Serial.printf("[INFO] Command received: Action=%s, Param1=%s, Param2=%s\n", action,
+        Serial.printf("[INFO] Command received: Action=%s, Parameter=%s, Value=%s\n", action,
                       param_one, param_two);
         self->setupCommand(param_one, param_two);
       }
-      else if (strcmp(action, SET) == 0 && strlen(param_one) > 0 && strlen(param_two) > 0 &&
+      else if (strcmp(action, MOVE) == 0 && strlen(param_one) > 0 && strlen(param_two) > 0 &&
                strlen(param_three) > 0) {
-        Serial.printf("[INFO] Command received: Action=%s, Param1=%s, Param2=%s, Param3=%s\n",
-                      action, param_one, param_two, param_three);
+        Serial.printf("[INFO] Command received: Action=%s, X=%s, Y=%s, Z=%s\n", action, param_one,
+                      param_two, param_three);
         self->moveCommand(param_one, param_two, param_three);
       }
       else if (strcmp(action, READ) == 0 && strlen(param_one) > 0 && strlen(param_two) == 0 &&
                strlen(param_three) == 0) {
-        Serial.printf("[INFO] Command received: Action=%s, Param1=%s\n", action, param_one);
+        Serial.printf("[INFO] Command received: Action=%s, Parameter=%s\n", action, param_one);
         self->readCommand(param_one);
       }
       else if (strcmp(cmd, "?") == 0) {
