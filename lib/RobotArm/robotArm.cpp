@@ -51,6 +51,8 @@ void RobotArm::startRobotArm()
     Serial.println("\nREADY");
   }
 
+  robotManager.init();
+
   Serial.setTimeout(10000); // Configurar tiempo de espera para comandos seriales
 }
 
@@ -122,6 +124,40 @@ void RobotArm::processCommandTask(void* pvParameters)
 void RobotArm::setupCommand(const char* param, const char* value)
 {
   Serial.printf("[SETUP] Setting %s to %s\n", param, value);
+
+  if (strcmp(param, "SERVO1") == 0) {
+    int pos = atoi(value);
+    robotManager.setServoPosition(1, pos);
+    Serial.printf("[INFO] Servo 1 set to position %d\n", robotManager.getServoPosition(1));
+  }
+  else if (strcmp(param, "SERVO2") == 0) {
+    int pos = atoi(value);
+    robotManager.setServoPosition(2, pos);
+    Serial.printf("[INFO] Servo 2 set to position %d\n", robotManager.getServoPosition(2));
+  }
+  else if (strcmp(param, "SERVO3") == 0) {
+    int pos = atoi(value);
+    robotManager.setServoPosition(3, pos);
+    Serial.printf("[INFO] Servo 3 set to position %d\n", robotManager.getServoPosition(3));
+  }
+  else if (strcmp(param, "SERVO4") == 0) {
+    int pos = atoi(value);
+    robotManager.setServoPosition(4, pos);
+    Serial.printf("[INFO] Servo 4 set to position %d\n", robotManager.getServoPosition(4));
+  }
+  else if (strcmp(param, "SERVO5") == 0) {
+    int pos = atoi(value);
+    robotManager.setServoPosition(5, pos);
+    Serial.printf("[INFO] Servo 5 set to position %d\n", robotManager.getServoPosition(5));
+  }
+  else if (strcmp(param, "SERVO6") == 0) {
+    int pos = atoi(value);
+    robotManager.setServoPosition(6, pos);
+    Serial.printf("[INFO] Servo 6 set to position %d\n", robotManager.getServoPosition(6));
+  }
+  else {
+    Serial.printf("[ERROR] Unknown parameter: %s\n", param);
+  }
 }
 
 void RobotArm::moveCommand(const char* x, const char* y, const char* z)
