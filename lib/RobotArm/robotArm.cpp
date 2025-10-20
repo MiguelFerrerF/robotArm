@@ -123,43 +123,37 @@ void RobotArm::processCommandTask(void* pvParameters)
 
 void RobotArm::setupCommand(const char* param, const char* value)
 {
-int offset1 = 90;
-int offset2 = 98;
-int offset3 = 90;
-int offset4 = 142;
-int offset5 = 82;
-
   Serial.printf("[SETUP] Setting %s to %s\n", param, value);
 
   if (strcmp(param, "SERVO1") == 0) {
     int pos = atoi(value);
     robotManager.setServoPosition(1, pos);
-    Serial.printf("ANGLE:SERVO1:%d\n", robotManager.getServoPosition(1) - offset1);
+    Serial.printf("[INFO] Servo 1 set to position %d\n", robotManager.getServoPosition(1));
   }
   else if (strcmp(param, "SERVO2") == 0) {
     int pos = atoi(value);
     robotManager.setServoPosition(2, pos);
-    Serial.printf("ANGLE:SERVO2:%d\n", robotManager.getServoPosition(2) - offset2);
+    Serial.printf("[INFO] Servo 2 set to position %d\n", robotManager.getServoPosition(2));
   }
   else if (strcmp(param, "SERVO3") == 0) {
     int pos = atoi(value);
     robotManager.setServoPosition(3, pos);
-    Serial.printf("ANGLE:SERVO3:%d\n", robotManager.getServoPosition(3) - offset3);
+    Serial.printf("[INFO] Servo 3 set to position %d\n", robotManager.getServoPosition(3));
   }
   else if (strcmp(param, "SERVO4") == 0) {
     int pos = atoi(value);
     robotManager.setServoPosition(4, pos);
-    Serial.printf("ANGLE:SERVO4:%d\n", robotManager.getServoPosition(4) - offset4);
+    Serial.printf("[INFO] Servo 4 set to position %d\n", robotManager.getServoPosition(4));
   }
   else if (strcmp(param, "SERVO5") == 0) {
     int pos = atoi(value);
     robotManager.setServoPosition(5, pos);
-    Serial.printf("ANGLE:SERVO5:%d\n", robotManager.getServoPosition(5) - offset5);
+    Serial.printf("[INFO] Servo 5 set to position %d\n", robotManager.getServoPosition(5));
   }
   else if (strcmp(param, "SERVO6") == 0) {
     int pos = atoi(value);
     robotManager.setServoPosition(6, pos);
-    Serial.printf("ANGLE:SERVO6:%d\n", robotManager.getServoPosition(6));
+    Serial.printf("[INFO] Servo 6 set to position %d\n", robotManager.getServoPosition(6));
   }
   else {
     Serial.printf("[ERROR] Unknown parameter: %s\n", param);
