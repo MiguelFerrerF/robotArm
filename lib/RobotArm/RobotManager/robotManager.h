@@ -10,13 +10,24 @@
 #define SERVO5_PIN 33
 #define SERVO6_PIN 32
 
+#define SERVO_1_OFFSET 30
+#define SERVO_2_OFFSET 103
+#define SERVO_3_OFFSET 90
+#define SERVO_4_OFFSET 134
+#define SERVO_5_OFFSET 69
+#define SERVO_6_OFFSET 0
+
 class RobotManager
 {
 public:
   RobotManager();
   void init();
   void setServoPosition(int servo, int position);
-  int  getServoPosition(int servo);
+  void setServoOffset(int servo, int offset);
+
+  int getServoPosition(int servo);
+  int getServoOffset(int servo);
+  int getServoPositionWithOffset(int servo);
 
 private:
   Servo servo1;
@@ -25,6 +36,13 @@ private:
   Servo servo4;
   Servo servo5;
   Servo servo6;
+
+  int offset1 = SERVO_1_OFFSET;
+  int offset2 = SERVO_2_OFFSET;
+  int offset3 = SERVO_3_OFFSET;
+  int offset4 = SERVO_4_OFFSET;
+  int offset5 = SERVO_5_OFFSET;
+  int offset6 = SERVO_6_OFFSET;
 };
 
 #endif // ROBOTMANAGER_H

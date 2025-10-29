@@ -67,3 +67,56 @@ int RobotManager::getServoPosition(int servo)
       return -1;
   }
 }
+
+void RobotManager::setServoOffset(int servo, int offset)
+{
+  switch (servo) {
+    case 1:
+      offset1 = offset;
+      break;
+    case 2:
+      offset2 = offset;
+      break;
+    case 3:
+      offset3 = offset;
+      break;
+    case 4:
+      offset4 = offset;
+      break;
+    case 5:
+      offset5 = offset;
+      break;
+    case 6:
+      offset6 = offset;
+      break;
+    default:
+      Serial.println("[ERROR] Invalid servo number.");
+      break;
+  }
+}
+
+int RobotManager::getServoOffset(int servo)
+{
+  switch (servo) {
+    case 1:
+      return offset1;
+    case 2:
+      return offset2;
+    case 3:
+      return offset3;
+    case 4:
+      return offset4;
+    case 5:
+      return offset5;
+    case 6:
+      return offset6;
+    default:
+      Serial.println("[ERROR] Invalid servo number.");
+      return 0;
+  }
+}
+
+int RobotManager::getServoPositionWithOffset(int servo)
+{
+  return getServoPosition(servo) - getServoOffset(servo);
+}
