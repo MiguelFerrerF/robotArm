@@ -123,11 +123,11 @@ void RobotArm::processCommandTask(void* pvParameters)
 
 void RobotArm::setupCommand(const char* param, const char* value)
 {
-  int offset1 = 26;
-  int offset2 = 101;
+  int offset1 = 30;
+  int offset2 = 103;
   int offset3 = 90;
-  int offset4 = 145;
-  int offset5 = 66;
+  int offset4 = 134;
+  int offset5 = 69;
   int offset6 = 0;
 
   Serial.printf("[SETUP] Setting %s to %s\n", param, value);
