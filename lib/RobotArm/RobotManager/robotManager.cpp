@@ -6,18 +6,18 @@ RobotManager::RobotManager()
 
 void RobotManager::init()
 {
-  servo1.setPeriodHertz(50); // Standard 50hz servo
-  servo2.setPeriodHertz(50); // Standard 50hz servo
-  servo3.setPeriodHertz(50); // Standard 50hz servo
-  servo4.setPeriodHertz(50); // Standard 50hz servo
-  servo5.setPeriodHertz(50); // Standard 50hz servo
-  servo6.setPeriodHertz(50); // Standard 50hz servo
-  servo1.attach(SERVO1_PIN, 550, 2550);
-  servo2.attach(SERVO2_PIN, 550, 2550);
-  servo3.attach(SERVO3_PIN, 550, 2550);
-  servo4.attach(SERVO4_PIN, 550, 2550);
-  servo5.attach(SERVO5_PIN, 550, 2550);
-  servo6.attach(SERVO6_PIN, 550, 2550);
+  servo1.setPeriodHertz(50);
+  servo2.setPeriodHertz(50);
+  servo3.setPeriodHertz(50);
+  servo4.setPeriodHertz(50);
+  servo5.setPeriodHertz(50);
+  servo6.setPeriodHertz(50);
+  servo1.attach(SERVO1_PIN, MG995_uS_LOW, MG995_uS_HIGH);
+  servo2.attach(SERVO2_PIN, MG995_uS_LOW, MG995_uS_HIGH);
+  servo3.attach(SERVO3_PIN, MG995_uS_LOW, MG995_uS_HIGH);
+  servo4.attach(SERVO4_PIN, MG90S_uS_LOW, MG90S_uS_HIGH);
+  servo5.attach(SERVO5_PIN, MG90S_uS_LOW, MG90S_uS_HIGH);
+  servo6.attach(SERVO6_PIN, MG90S_uS_LOW, MG90S_uS_HIGH);
 }
 
 void RobotManager::setServoPosition(int servo, int position)
