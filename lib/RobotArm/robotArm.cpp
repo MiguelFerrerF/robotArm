@@ -176,12 +176,12 @@ void RobotArm::readCommand(const char* variable)
     Serial.printf("ANGLE:SERVO6:%d\n", robotManager.getServoPosition(6));
   }
   else if (strcmp(variable, SERVO_ANGLES_WITH_OFFSET) == 0) {
-    Serial.printf("ANGLE:SERVO1:%d\n", robotManager.getServoPositionWithOffset(1));
-    Serial.printf("ANGLE:SERVO2:%d\n", robotManager.getServoPositionWithOffset(2));
-    Serial.printf("ANGLE:SERVO3:%d\n", robotManager.getServoPositionWithOffset(3));
-    Serial.printf("ANGLE:SERVO4:%d\n", robotManager.getServoPositionWithOffset(4));
-    Serial.printf("ANGLE:SERVO5:%d\n", robotManager.getServoPositionWithOffset(5));
-    Serial.printf("ANGLE:SERVO6:%d\n", robotManager.getServoPositionWithOffset(6));
+    Serial.printf("ANGLE_WITH_OFFSET:SERVO1:%d\n", robotManager.getServoPositionWithOffset(1));
+    Serial.printf("ANGLE_WITH_OFFSET:SERVO2:%d\n", robotManager.getServoPositionWithOffset(2));
+    Serial.printf("ANGLE_WITH_OFFSET:SERVO3:%d\n", robotManager.getServoPositionWithOffset(3));
+    Serial.printf("ANGLE_WITH_OFFSET:SERVO4:%d\n", robotManager.getServoPositionWithOffset(4));
+    Serial.printf("ANGLE_WITH_OFFSET:SERVO5:%d\n", robotManager.getServoPositionWithOffset(5));
+    Serial.printf("ANGLE_WITH_OFFSET:SERVO6:%d\n", robotManager.getServoPositionWithOffset(6));
   }
   else if (strcmp(variable, SERVO_OFFSETS) == 0) {
     Serial.printf("OFFSET:SERVO1:%d\n", robotManager.getServoOffset(1));
