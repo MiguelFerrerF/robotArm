@@ -74,11 +74,11 @@
 #define DEFAULT_uS_HIGH 2400
 
 // Values for TowerPro MG995 large servos
-#define MG995_uS_LOW 1000
-#define MG995_uS_HIGH 2000
+#define MG995_uS_LOW 550
+#define MG995_uS_HIGH 2550
 
 // Values for TowerPro SG90 small servos
-#define MG90S_uS_LOW 400
+#define MG90S_uS_LOW 550
 #define MG90S_uS_HIGH 2400
 
 #ifdef ARDUINO_ESP32C3_DEV
@@ -132,12 +132,12 @@ class Servo
 public:
   Servo();
   // Arduino Servo Library calls
-  int attach(int pin); // attach the given pin to the next free channel, returns channel number or 0
-                       // if failure
+  int attach(int pin);                    // attach the given pin to the next free channel, returns channel number or 0
+                                          // if failure
   int  attach(int pin, int min, int max); // as above but also sets min and max values for writes.
   void detach();
-  void write(int value); // if value is < MIN_PULSE_WIDTH its treated as an angle, otherwise as
-                         // pulse width in microseconds
+  void write(int value);             // if value is < MIN_PULSE_WIDTH its treated as an angle, otherwise as
+                                     // pulse width in microseconds
   void writeMicroseconds(int value); // Write pulse width in microseconds
   void writeTicks(int value);        // Write ticks, the smallest increment the servo can handle
   void release();
@@ -162,13 +162,13 @@ private:
   //   static int ChannelUsed[];                          // used to track whether a channel is in
   //   service int servoChannel = 0;                              // channel number for this servo
 
-  int min               = DEFAULT_uS_LOW;            // minimum pulse width for this servo
-  int max               = DEFAULT_uS_HIGH;           // maximum pulse width for this servo
-  int pinNumber         = 0;                         // GPIO pin assigned to this channel
-  int timer_width       = DEFAULT_TIMER_WIDTH;       // ESP32 allows variable width PWM timers
-  int ticks             = DEFAULT_PULSE_WIDTH_TICKS; // current pulse width on this channel
-  int timer_width_ticks = DEFAULT_TIMER_WIDTH_TICKS; // no. of ticks at rollover; varies with width
-  ESP32PWM* getPwm();                                // get the PWM object
+  int       min               = DEFAULT_uS_LOW;            // minimum pulse width for this servo
+  int       max               = DEFAULT_uS_HIGH;           // maximum pulse width for this servo
+  int       pinNumber         = 0;                         // GPIO pin assigned to this channel
+  int       timer_width       = DEFAULT_TIMER_WIDTH;       // ESP32 allows variable width PWM timers
+  int       ticks             = DEFAULT_PULSE_WIDTH_TICKS; // current pulse width on this channel
+  int       timer_width_ticks = DEFAULT_TIMER_WIDTH_TICKS; // no. of ticks at rollover; varies with width
+  ESP32PWM* getPwm();                                      // get the PWM object
   ESP32PWM  pwm;
   int       REFRESH_CPS = 50;
 };
