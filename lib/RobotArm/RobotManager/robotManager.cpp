@@ -118,5 +118,10 @@ int RobotManager::getServoOffset(int servo)
 
 int RobotManager::getServoPositionWithOffset(int servo)
 {
-  return getServoPosition(servo) - getServoOffset(servo);
+  int position = getServoPosition(servo) - getServoOffset(servo);
+  if (position > 180)
+    return 180;
+  if (position < 0)
+    return 0;
+  return position;
 }
