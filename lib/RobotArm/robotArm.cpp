@@ -120,40 +120,58 @@ void RobotArm::setupCommand(const char* param, const char* value)
 {
   if (strcmp(param, SERVO_1) == 0) {
     robotManager.setServoPosition(1, atoi(value));
+    Serial.printf("Servo1 has been set to %dº\n", robotManager.getServoPosition(1));
     Serial.printf("ANGLE:SERVO1:%d\n", robotManager.getServoPositionWithOffset(1));
   }
   else if (strcmp(param, SERVO_2) == 0) {
     robotManager.setServoPosition(2, atoi(value));
-    Serial.printf("ANGLE:SERVO2:%d\n", robotManager.getServoPositionWithOffset(2));
+    Serial.printf("Servo2 has been set to %dº\n", robotManager.getServoPosition(2));
+    Serial.printf("ANGLE:SERVO2:%d\n", robotManager.getServoPositionWithOffset(2) * (-1));
   }
   else if (strcmp(param, SERVO_3) == 0) {
     robotManager.setServoPosition(3, atoi(value));
+    Serial.printf("Servo3 has been set to %dº\n", robotManager.getServoPosition(3));
     Serial.printf("ANGLE:SERVO3:%d\n", robotManager.getServoPositionWithOffset(3));
   }
   else if (strcmp(param, SERVO_4) == 0) {
     robotManager.setServoPosition(4, atoi(value));
+    Serial.printf("Servo4 has been set to %dº\n", robotManager.getServoPosition(4));
     Serial.printf("ANGLE:SERVO4:%d\n", robotManager.getServoPositionWithOffset(4));
   }
   else if (strcmp(param, SERVO_5) == 0) {
     robotManager.setServoPosition(5, atoi(value));
-    Serial.printf("ANGLE:SERVO5:%d\n", robotManager.getServoPositionWithOffset(5));
+    Serial.printf("Servo5 has been set to %dº\n", robotManager.getServoPosition(5));
+    Serial.printf("ANGLE:SERVO5:%d\n", robotManager.getServoPositionWithOffset(5) * (-1));
   }
   else if (strcmp(param, SERVO_6) == 0) {
     robotManager.setServoPosition(6, atoi(value));
+    Serial.printf("Servo6 has been set to %dº\n", robotManager.getServoPosition(6));
     Serial.printf("ANGLE:SERVO6:%d\n", robotManager.getServoPositionWithOffset(6));
   }
-  else if (strcmp(param, OFFSET_1) == 0)
+  else if (strcmp(param, OFFSET_1) == 0) {
     robotManager.setServoOffset(1, atoi(value));
-  else if (strcmp(param, OFFSET_2) == 0)
+    Serial.printf("OFFSET:SERVO1:%d\n", robotManager.getServoOffset(1));
+  }
+  else if (strcmp(param, OFFSET_2) == 0) {
     robotManager.setServoOffset(2, atoi(value));
-  else if (strcmp(param, OFFSET_3) == 0)
+    Serial.printf("OFFSET:SERVO2:%d\n", robotManager.getServoOffset(2));
+  }
+  else if (strcmp(param, OFFSET_3) == 0) {
     robotManager.setServoOffset(3, atoi(value));
-  else if (strcmp(param, OFFSET_4) == 0)
+    Serial.printf("OFFSET:SERVO3:%d\n", robotManager.getServoOffset(3));
+  }
+  else if (strcmp(param, OFFSET_4) == 0) {
     robotManager.setServoOffset(4, atoi(value));
-  else if (strcmp(param, OFFSET_5) == 0)
+    Serial.printf("OFFSET:SERVO4:%d\n", robotManager.getServoOffset(4));
+  }
+  else if (strcmp(param, OFFSET_5) == 0) {
     robotManager.setServoOffset(5, atoi(value));
-  else if (strcmp(param, OFFSET_6) == 0)
+    Serial.printf("OFFSET:SERVO5:%d\n", robotManager.getServoOffset(5));
+  }
+  else if (strcmp(param, OFFSET_6) == 0) {
     robotManager.setServoOffset(6, atoi(value));
+    Serial.printf("OFFSET:SERVO6:%d\n", robotManager.getServoOffset(6));
+  }
   else {
     Serial.printf("[ERROR] Unknown parameter: %s\n", param);
   }

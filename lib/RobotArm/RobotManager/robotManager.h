@@ -11,11 +11,11 @@
 #define SERVO5_PIN 33
 #define SERVO6_PIN 32
 
-#define SERVO_1_OFFSET 30
+#define SERVO_1_OFFSET 24
 #define SERVO_2_OFFSET 103
-#define SERVO_3_OFFSET 90
-#define SERVO_4_OFFSET 134
-#define SERVO_5_OFFSET 69
+#define SERVO_3_OFFSET 20
+#define SERVO_4_OFFSET 148
+#define SERVO_5_OFFSET 82
 #define SERVO_6_OFFSET 0
 
 class RobotManager

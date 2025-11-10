@@ -38,7 +38,7 @@ void RobotManager::setServoPosition(int servo, int position)
       servo1.write(position);
       break;
     case 2:
-      servo2.write(position);
+      servo2.write(position - ((position - offset2) * 2));
       break;
     case 3:
       servo3.write(position);
@@ -47,7 +47,7 @@ void RobotManager::setServoPosition(int servo, int position)
       servo4.write(position);
       break;
     case 5:
-      servo5.write(position);
+      servo5.write(position - ((position - offset5) * 2));
       break;
     case 6:
       servo6.write(position);
@@ -58,7 +58,7 @@ void RobotManager::setServoPosition(int servo, int position)
   }
 }
 
-int RobotManager::getServoPosition(int servo)
+int RobotManager::  getServoPosition(int servo)
 {
   switch (servo) {
     case 1:
@@ -73,6 +73,27 @@ int RobotManager::getServoPosition(int servo)
       return servo5.read();
     case 6:
       return servo6.read();
+    default:
+      Serial.println("[ERROR] Invalid servo number.");
+      return -1;
+  }
+}
+
+int RobotManager::  getServoPositionWithOffset(int servo)
+{
+  switch (servo) {
+    case 1:
+      return servo1.read() - offset1;
+    case 2:
+      return servo2.read() - offset2;
+    case 3:
+      return servo3.read() - offset3;
+    case 4:
+      return servo4.read() - offset4;
+    case 5:
+      return servo5.read() - offset5;
+    case 6:
+      return servo6.read() - offset6;
     default:
       Serial.println("[ERROR] Invalid servo number.");
       return -1;
@@ -151,7 +172,10 @@ int RobotManager::getServoOffset(int servo)
   }
 }
 
+<<<<<<< HEAD
 int RobotManager::getServoPositionWithOffset(int servo)
 {
   return getServoPosition(servo);
 }
+=======
+>>>>>>> 7e66507571209ab60a542ab5021363796491efbf
