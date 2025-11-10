@@ -2,6 +2,7 @@
 #define ROBOTMANAGER_H
 
 #include <ESP32Servo.h>
+#include <Preferences.h>
 
 #define SERVO1_PIN 14
 #define SERVO2_PIN 27
@@ -30,6 +31,8 @@ public:
   int getServoPositionWithOffset(int servo);
 
 private:
+  Preferences preferences;
+
   Servo servo1;
   Servo servo2;
   Servo servo3;

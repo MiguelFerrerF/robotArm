@@ -18,6 +18,17 @@ void RobotManager::init()
   servo4.attach(SERVO4_PIN, MG90S_uS_LOW, MG90S_uS_HIGH);
   servo5.attach(SERVO5_PIN, MG90S_uS_LOW, MG90S_uS_HIGH);
   servo6.attach(SERVO6_PIN, MG90S_uS_LOW, MG90S_uS_HIGH);
+
+  // Initialize Preferences
+  if (preferences.begin("robot_arm", false)) {
+    offset1 = preferences.getInt("offset1", SERVO_1_OFFSET);
+    offset2 = preferences.getInt("offset2", SERVO_2_OFFSET);
+    offset3 = preferences.getInt("offset3", SERVO_3_OFFSET);
+    offset4 = preferences.getInt("offset4", SERVO_4_OFFSET);
+    offset5 = preferences.getInt("offset5", SERVO_5_OFFSET);
+    offset6 = preferences.getInt("offset6", SERVO_6_OFFSET);
+    preferences.end();
+  }
 }
 
 void RobotManager::setServoPosition(int servo, int position)
@@ -72,21 +83,45 @@ void RobotManager::setServoOffset(int servo, int offset)
 {
   switch (servo) {
     case 1:
+      if (preferences.begin("robot_arm", false)) {
+        preferences.putInt("offset1", offset);
+        preferences.end();
+      }
       offset1 = offset;
       break;
     case 2:
+      if (preferences.begin("robot_arm", false)) {
+        preferences.putInt("offset2", offset);
+        preferences.end();
+      }
       offset2 = offset;
       break;
     case 3:
+      if (preferences.begin("robot_arm", false)) {
+        preferences.putInt("offset3", offset);
+        preferences.end();
+      }
       offset3 = offset;
       break;
     case 4:
+      if (preferences.begin("robot_arm", false)) {
+        preferences.putInt("offset4", offset);
+        preferences.end();
+      }
       offset4 = offset;
       break;
     case 5:
+      if (preferences.begin("robot_arm", false)) {
+        preferences.putInt("offset5", offset);
+        preferences.end();
+      }
       offset5 = offset;
       break;
     case 6:
+      if (preferences.begin("robot_arm", false)) {
+        preferences.putInt("offset6", offset);
+        preferences.end();
+      }
       offset6 = offset;
       break;
     default:
@@ -118,10 +153,5 @@ int RobotManager::getServoOffset(int servo)
 
 int RobotManager::getServoPositionWithOffset(int servo)
 {
-  int position = getServoPosition(servo) - getServoOffset(servo);
-  if (position > 180)
-    return 180;
-  if (position < 0)
-    return 0;
-  return position;
+  return getServoPosition(servo);
 }
