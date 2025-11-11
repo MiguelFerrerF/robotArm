@@ -28,7 +28,11 @@ void RobotManager::init()
     offset5 = preferences.getInt("offset5", SERVO_5_OFFSET);
     offset6 = preferences.getInt("offset6", SERVO_6_OFFSET);
     preferences.end();
+  }else {
+    Serial.println("[ERROR] Failed to initialize Preferences.");
   }
+
+  Serial.printf("Servo Offsets loaded: %d, %d, %d, %d, %d, %d\n", offset1, offset2, offset3, offset4, offset5, offset6);
 }
 
 void RobotManager::setServoPosition(int servo, int position)
@@ -171,11 +175,3 @@ int RobotManager::getServoOffset(int servo)
       return 0;
   }
 }
-
-<<<<<<< HEAD
-int RobotManager::getServoPositionWithOffset(int servo)
-{
-  return getServoPosition(servo);
-}
-=======
->>>>>>> 7e66507571209ab60a542ab5021363796491efbf
