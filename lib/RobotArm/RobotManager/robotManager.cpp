@@ -28,7 +28,8 @@ void RobotManager::init()
     offset5 = preferences.getInt("offset5", SERVO_5_OFFSET);
     offset6 = preferences.getInt("offset6", SERVO_6_OFFSET);
     preferences.end();
-  }else {
+  }
+  else {
     Serial.println("[ERROR] Failed to initialize Preferences.");
   }
 
@@ -42,7 +43,7 @@ void RobotManager::setServoPosition(int servo, int position)
       servo1.write(position);
       break;
     case 2:
-      servo2.write(position - ((position - offset2) * 2));
+      servo2.write(180 - position);
       break;
     case 3:
       servo3.write(position);
@@ -51,7 +52,7 @@ void RobotManager::setServoPosition(int servo, int position)
       servo4.write(position);
       break;
     case 5:
-      servo5.write(position - ((position - offset5) * 2));
+      servo5.write(180 - position);
       break;
     case 6:
       servo6.write(position);
@@ -62,19 +63,19 @@ void RobotManager::setServoPosition(int servo, int position)
   }
 }
 
-int RobotManager::  getServoPosition(int servo)
+int RobotManager::getServoPosition(int servo)
 {
   switch (servo) {
     case 1:
       return servo1.read();
     case 2:
-      return servo2.read();
+      return 180 - servo2.read();
     case 3:
       return servo3.read();
     case 4:
       return servo4.read();
     case 5:
-      return servo5.read();
+      return 180 - servo5.read();
     case 6:
       return servo6.read();
     default:
@@ -83,7 +84,7 @@ int RobotManager::  getServoPosition(int servo)
   }
 }
 
-int RobotManager::  getServoPositionWithOffset(int servo)
+int RobotManager::getServoPositionWithOffset(int servo)
 {
   switch (servo) {
     case 1:
@@ -116,10 +117,10 @@ void RobotManager::setServoOffset(int servo, int offset)
       break;
     case 2:
       if (preferences.begin("robot_arm", false)) {
-        preferences.putInt("offset2", offset);
+        preferences.putInt("offset2", 180 - offset);
         preferences.end();
       }
-      offset2 = offset;
+      offset2 = 180 - offset;
       break;
     case 3:
       if (preferences.begin("robot_arm", false)) {
@@ -137,10 +138,10 @@ void RobotManager::setServoOffset(int servo, int offset)
       break;
     case 5:
       if (preferences.begin("robot_arm", false)) {
-        preferences.putInt("offset5", offset);
+        preferences.putInt("offset5", 180 - offset);
         preferences.end();
       }
-      offset5 = offset;
+      offset5 = 180 - offset;
       break;
     case 6:
       if (preferences.begin("robot_arm", false)) {
@@ -161,13 +162,13 @@ int RobotManager::getServoOffset(int servo)
     case 1:
       return offset1;
     case 2:
-      return offset2;
+      return (180 - offset2);
     case 3:
       return offset3;
     case 4:
       return offset4;
     case 5:
-      return offset5;
+      return (180 - offset5);
     case 6:
       return offset6;
     default:
