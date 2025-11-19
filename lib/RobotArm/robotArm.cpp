@@ -119,32 +119,32 @@ void RobotArm::processCommandTask(void* pvParameters)
 void RobotArm::setupCommand(const char* param, const char* value)
 {
   if (strcmp(param, SERVO_1) == 0) {
-    robotManager.setServoPosition(1, atoi(value));
+    robotManager.setServoTargetPosition(1, atoi(value));
     Serial.printf("ANGLE:SERVO1:%d\n", robotManager.getServoPosition(1));
     Serial.printf("ANGLE_WITH_OFFSET:SERVO1:%d\n", robotManager.getServoPositionWithOffset(1));
   }
   else if (strcmp(param, SERVO_2) == 0) {
-    robotManager.setServoPosition(2, atoi(value));
+    robotManager.setServoTargetPosition(2, atoi(value));
     Serial.printf("ANGLE:SERVO2:%d\n", robotManager.getServoPosition(2));
     Serial.printf("ANGLE_WITH_OFFSET:SERVO2:%d\n", robotManager.getServoPositionWithOffset(2) * (-1));
   }
   else if (strcmp(param, SERVO_3) == 0) {
-    robotManager.setServoPosition(3, atoi(value));
+    robotManager.setServoTargetPosition(3, atoi(value));
     Serial.printf("ANGLE:SERVO3:%d\n", robotManager.getServoPosition(3));
     Serial.printf("ANGLE_WITH_OFFSET:SERVO3:%d\n", robotManager.getServoPositionWithOffset(3));
   }
   else if (strcmp(param, SERVO_4) == 0) {
-    robotManager.setServoPosition(4, atoi(value));
+    robotManager.setServoTargetPosition(4, atoi(value));
     Serial.printf("ANGLE:SERVO4:%d\n", robotManager.getServoPosition(4));
     Serial.printf("ANGLE_WITH_OFFSET:SERVO4:%d\n", robotManager.getServoPositionWithOffset(4));
   }
   else if (strcmp(param, SERVO_5) == 0) {
-    robotManager.setServoPosition(5, atoi(value));
+    robotManager.setServoTargetPosition(5, atoi(value));
     Serial.printf("ANGLE:SERVO5:%d\n", robotManager.getServoPosition(5));
     Serial.printf("ANGLE_WITH_OFFSET:SERVO5:%d\n", robotManager.getServoPositionWithOffset(5) * (-1));
   }
   else if (strcmp(param, SERVO_6) == 0) {
-    robotManager.setServoPosition(6, atoi(value));
+    robotManager.setServoTargetPosition(6, atoi(value));
     Serial.printf("ANGLE:SERVO6:%d\n", robotManager.getServoPosition(6));
     Serial.printf("ANGLE_WITH_OFFSET:SERVO6:%d\n", robotManager.getServoPositionWithOffset(6));
   }
@@ -171,6 +171,10 @@ void RobotArm::setupCommand(const char* param, const char* value)
   else if (strcmp(param, OFFSET_6) == 0) {
     robotManager.setServoOffset(6, atoi(value));
     Serial.printf("OFFSET:SERVO6:%d\n", robotManager.getServoOffset(6));
+  }
+  else if (strcmp(param, SERVO_SPEED) == 0) {
+    robotManager.setMovementSpeed(atoi(value));
+    Serial.printf("SPEED:%d\n", robotManager.getMovementSpeed());
   }
   else {
     Serial.printf("[ERROR] Unknown parameter: %s\n", param);
