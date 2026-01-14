@@ -66,6 +66,12 @@ void RobotManager::init()
     offset4        = preferences.getInt("offset4", SERVO_4_OFFSET);
     offset5        = preferences.getInt("offset5", SERVO_5_OFFSET);
     offset6        = preferences.getInt("offset6", SERVO_6_OFFSET);
+    place1         = preferences.getInt("place1", 0);
+    place2         = preferences.getInt("place2", 0);
+    place3         = preferences.getInt("place3", 0);
+    place4         = preferences.getInt("place4", 0);
+    place5         = preferences.getInt("place5", 0);
+    place6         = preferences.getInt("place6", 0);
     _movementSpeed = preferences.getInt("speed", DEFAULT_SPEED);
     preferences.end();
   }
@@ -296,5 +302,77 @@ int RobotManager::getServoOffset(int servo)
     default:
       Serial.println("[ERROR] Invalid servo number.");
       return 0;
+  }
+}
+
+void RobotManager::setPlacePosition(int servo, int angle)
+{
+  switch (servo) {
+    case 1:
+      if (preferences.begin("robot_arm", false)) {
+        preferences.putInt("place1", angle);
+        preferences.end();
+      }
+      place1 = angle;
+      break;
+    case 2:
+      if (preferences.begin("robot_arm", false)) {
+        preferences.putInt("place2", angle);
+        preferences.end();
+      }
+      place2 = angle;
+      break;
+    case 3:
+      if (preferences.begin("robot_arm", false)) {
+        preferences.putInt("place3", angle);
+        preferences.end();
+      }
+      place3 = angle;
+      break;
+    case 4:
+      if (preferences.begin("robot_arm", false)) {
+        preferences.putInt("place4", angle);
+        preferences.end();
+      }
+      place4 = angle;
+      break;
+    case 5:
+      if (preferences.begin("robot_arm", false)) {
+        preferences.putInt("place5", angle);
+        preferences.end();
+      }
+      place5 = angle;
+      break;
+    case 6:
+      if (preferences.begin("robot_arm", false)) {
+        preferences.putInt("place6", angle);
+        preferences.end();
+      }
+      place6 = angle;
+      break;
+    default:
+      Serial.println("[ERROR] Invalid servo number.");
+      break;
+  }
+}
+
+int RobotManager::getPlacePosition(int servo)
+{
+  switch (servo) {
+    case 1:
+      return place1;
+    case 2:
+      return place2;
+    case 3:
+      return place3;
+    case 4:
+      return place4;
+    case 5:
+      return place5;
+    case 6:
+      return place6;
+    default:
+      Serial.println("[ERROR] Invalid servo number.");
+      return -1;
   }
 }

@@ -105,7 +105,7 @@ void RobotArm::processCommandTask(void* pvParameters)
       else if (strcmp(cmd, "?") == 0) {
         Serial.println("[INFO] Available commands:");
         Serial.println(" - SETUP:<param>:<value> to configure the robot arm.");
-        Serial.println(" - SET:<x>:<y>:<z> to move the robot arm to position (x,y,z).");
+        Serial.println(" - MOVE:<x>:<y>:<z> to move the robot arm to position (x,y,z).");
         Serial.println(" - READ:<variable> to read information from the robot arm.");
         Serial.println(" - ? to show this help message.");
       }
@@ -175,6 +175,30 @@ void RobotArm::setupCommand(const char* param, const char* value)
   else if (strcmp(param, SERVO_SPEED) == 0) {
     robotManager.setMovementSpeed(atoi(value));
     Serial.printf("SPEED:%d\n", robotManager.getMovementSpeed());
+  }
+  else if (strcmp(param, PLACE_1) == 0) {
+    robotManager.setPlacePosition(1, atoi(value));
+    Serial.printf("PLACE:SERVO1:%d\n", robotManager.getPlacePosition(1));
+  }
+  else if (strcmp(param, PLACE_2) == 0) {
+    robotManager.setPlacePosition(2, atoi(value));
+    Serial.printf("PLACE:SERVO2:%d\n", robotManager.getPlacePosition(2));
+  }
+  else if (strcmp(param, PLACE_3) == 0) {
+    robotManager.setPlacePosition(3, atoi(value));
+    Serial.printf("PLACE:SERVO3:%d\n", robotManager.getPlacePosition(3));
+  }
+  else if (strcmp(param, PLACE_4) == 0) {
+    robotManager.setPlacePosition(4, atoi(value));
+    Serial.printf("PLACE:SERVO4:%d\n", robotManager.getPlacePosition(4));
+  }
+  else if (strcmp(param, PLACE_5) == 0) {
+    robotManager.setPlacePosition(5, atoi(value));
+    Serial.printf("PLACE:SERVO5:%d\n", robotManager.getPlacePosition(5));
+  }
+  else if (strcmp(param, PLACE_6) == 0) {
+    robotManager.setPlacePosition(6, atoi(value));
+    Serial.printf("PLACE:SERVO6:%d\n", robotManager.getPlacePosition(6));
   }
   else {
     Serial.printf("[ERROR] Unknown parameter: %s\n", param);

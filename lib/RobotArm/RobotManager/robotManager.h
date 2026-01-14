@@ -32,10 +32,12 @@ public:
   void init();
   void setServoTargetPosition(int servo, int position);
   void setServoOffset(int servo, int offset);
+  void setPlacePosition(int servo, int angle);
   void setMovementSpeed(int speed);
 
   int getServoPosition(int servo);
   int getServoOffset(int servo);
+  int getPlacePosition(int servo);
   int getServoPositionWithOffset(int servo);
   int getMovementSpeed();
 
@@ -58,6 +60,13 @@ private:
   int offset4 = SERVO_4_OFFSET;
   int offset5 = SERVO_5_OFFSET;
   int offset6 = SERVO_6_OFFSET;
+
+  int place1 = 0;
+  int place2 = 0;
+  int place3 = 0;
+  int place4 = 0;
+  int place5 = 0;
+  int place6 = 0;
 
   int _movementSpeed     = DEFAULT_SPEED;
   int _targetPosition[6] = {0, 0, 0, 0, 0, 0};
