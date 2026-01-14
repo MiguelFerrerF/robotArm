@@ -1,7 +1,7 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-#define MOVE "MOVE"
+#define PLACE "PLACE"
 #define READ "READ"
 #define SETUP "SETUP"
 
@@ -26,6 +26,7 @@
 #define PLACE_4 "PLACE4"
 #define PLACE_5 "PLACE5"
 #define PLACE_6 "PLACE6"
+#define ABORT "ABORT"
 
 #define SERVO_ANGLES "ANGLES"
 #define SERVO_ANGLES_WITH_OFFSET "ANGLES_WITH_OFFSET"

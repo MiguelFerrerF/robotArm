@@ -25,11 +25,14 @@ private:
   static void processCommandTask(void* pvParameters);
 
   void setupCommand(const char* param, const char* value);
-  void moveCommand(const char* x, const char* y, const char* z);
+  void placeCommand(const char* q1, const char* q2, const char* q3, const char* q4, const char* q5, const char* q6);
   void readCommand(const char* variable);
 
   TaskHandle_t  _serialTaskHandle = nullptr;
   QueueHandle_t _commandQueue     = nullptr;
+
+  bool _isRunning      = false;
+  bool _abortRequested = false;
 
   RobotManager robotManager;
 };

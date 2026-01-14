@@ -88,15 +88,19 @@ void RobotArm::processCommandTask(void* pvParameters)
   char      cmd[READ_BUFFER_SIZE];
   while (true) {
     if (xQueueReceive(self->_commandQueue, &cmd, portMAX_DELAY) == pdPASS) {
-      char action[10] = {0}, param_one[50] = {0}, param_two[50] = {0}, param_three[50] = {0};
-      sscanf(cmd, "%9[^:]:%49[^:]:%49[^:]:%49s", action, param_one, param_two, param_three);
-      if (strcmp(action, SETUP) == 0 && strlen(param_one) > 0 && strlen(param_two) > 0 && strlen(param_three) == 0) {
+      char action[10] = {0}, param_one[50] = {0}, param_two[50] = {0}, param_three[50] = {0}, param_four[50] = {0}, param_five[50] = {0},
+           param_six[50] = {0};
+      sscanf(cmd, "%9[^:]:%49[^:]:%49[^:]:%49[^:]:%49[^:]:%49[^:]:%49[^:]", action, param_one, param_two, param_three, param_four, param_five,
+             param_six);
+      if (strcmp(action, SETUP) == 0 && strlen(param_one) > 0 && strlen(param_two) > 0 && strlen(param_three) == 0 && strlen(param_four) == 0 &&
+          strlen(param_five) == 0 && strlen(param_six) == 0) {
         Serial.printf("[INFO] Command received: Action=%s, Parameter=%s, Value=%s\n", action, param_one, param_two);
         self->setupCommand(param_one, param_two);
       }
-      else if (strcmp(action, MOVE) == 0 && strlen(param_one) > 0 && strlen(param_two) > 0 && strlen(param_three) > 0) {
-        Serial.printf("[INFO] Command received: Action=%s, X=%s, Y=%s, Z=%s\n", action, param_one, param_two, param_three);
-        self->moveCommand(param_one, param_two, param_three);
+      else if (strcmp(action, PLACE) == 0 && strlen(param_one) > 0 && strlen(param_two) > 0 && strlen(param_three) > 0) {
+        Serial.printf("[INFO] Command received: Action=%s, Q1=%s, Q2=%s, Q3=%s, Q4=%s, Q5=%s, Q6=%s\n", action, param_one, param_two, param_three,
+                      param_four, param_five, param_six);
+        self->placeCommand(param_one, param_two, param_three, param_four, param_five, param_six);
       }
       else if (strcmp(action, READ) == 0 && strlen(param_one) > 0 && strlen(param_two) == 0 && strlen(param_three) == 0) {
         Serial.printf("[INFO] Command received: Action=%s, Parameter=%s\n", action, param_one);
@@ -105,7 +109,7 @@ void RobotArm::processCommandTask(void* pvParameters)
       else if (strcmp(cmd, "?") == 0) {
         Serial.println("[INFO] Available commands:");
         Serial.println(" - SETUP:<param>:<value> to configure the robot arm.");
-        Serial.println(" - MOVE:<x>:<y>:<z> to move the robot arm to position (x,y,z).");
+        Serial.println(" - PLACE:<q1>:<q2>:<q3>:<q4>:<q5>:<q6> to move all servos to specified positions.");
         Serial.println(" - READ:<variable> to read information from the robot arm.");
         Serial.println(" - ? to show this help message.");
       }
@@ -200,14 +204,81 @@ void RobotArm::setupCommand(const char* param, const char* value)
     robotManager.setPlacePosition(6, atoi(value));
     Serial.printf("PLACE:SERVO6:%d\n", robotManager.getPlacePosition(6));
   }
+  else if (strcmp(param, ABORT) == 0) {
+    Serial.println("[INFO] Aborting current movements.");
+    _abortRequested = true;
+  }
   else {
     Serial.printf("[ERROR] Unknown parameter: %s\n", param);
   }
 }
 
-void RobotArm::moveCommand(const char* x, const char* y, const char* z)
+void RobotArm::placeCommand(const char* q1, const char* q2, const char* q3, const char* q4, const char* q5, const char* q6)
 {
-  Serial.printf("[MOVE] Moving to position X:%s Y:%s Z:%s\n", x, y, z);
+  Serial.printf("[PLACE] Moving to positions Q1:%s Q2:%s Q3:%s Q4:%s Q5:%s Q6:%s\n", q1, q2, q3, q4, q5, q6);
+
+  _isRunning      = true;
+  _abortRequested = false;
+  robotManager.setServoTargetPosition(5, atoi(q5));
+  robotManager.setServoTargetPosition(3, atoi(q3));
+  robotManager.setServoTargetPosition(2, atoi(q2));
+  robotManager.setServoTargetPosition(1, atoi(q1));
+
+  vTaskDelay(4000 / portTICK_PERIOD_MS); // Small delay to ensure the arm is in the correct position before moving the last claw servo
+
+  if (_abortRequested) {
+    Serial.println("[PLACE] Movement aborted before moving Servo 6.");
+    _isRunning = false;
+    return;
+  }
+  robotManager.setServoTargetPosition(6, atoi(q6));
+
+  // Wait for the claw servo to reach its position
+  vTaskDelay(2000 / portTICK_PERIOD_MS);
+
+  // Check if an abort was requested during the movement
+  if (_abortRequested) {
+    Serial.println("[PLACE] Movement aborted.");
+    _isRunning = false;
+    return;
+  }
+  else
+    Serial.println("[PLACE] Movement completed.");
+
+  // Move the claw to a upper position (motor 2 to offset) before moving to place positions
+  robotManager.setServoTargetPosition(1, robotManager.getPlacePosition(1));
+  robotManager.setServoTargetPosition(2, robotManager.getServoOffset(2));
+  vTaskDelay(3000 / portTICK_PERIOD_MS); // Wait for the base
+
+  // Move the arm to the place saved positions
+  robotManager.setServoTargetPosition(2, robotManager.getPlacePosition(2));
+  robotManager.setServoTargetPosition(3, robotManager.getPlacePosition(3));
+  robotManager.setServoTargetPosition(5, robotManager.getPlacePosition(5));
+
+  vTaskDelay(3000 / portTICK_PERIOD_MS); // Wait for the arm to reach the place positions
+
+  if (_abortRequested) {
+    Serial.println("[PLACE] Movement to place positions aborted.");
+    _isRunning = false;
+    return;
+  }
+  else {
+    Serial.println("[PLACE] Moved to place positions successfully.");
+  }
+
+  // Open claw after placing to 130 degrees
+  robotManager.setServoTargetPosition(6, 130);
+  vTaskDelay(3000 / portTICK_PERIOD_MS);
+
+  // Return to offset positions after placing
+  robotManager.setServoTargetPosition(1, robotManager.getServoOffset(1));
+  robotManager.setServoTargetPosition(2, robotManager.getServoOffset(2));
+  robotManager.setServoTargetPosition(3, robotManager.getServoOffset(3));
+  robotManager.setServoTargetPosition(4, robotManager.getServoOffset(4));
+  robotManager.setServoTargetPosition(5, robotManager.getServoOffset(5));
+  robotManager.setServoTargetPosition(6, robotManager.getServoOffset(6));
+  _isRunning = false;
+  Serial.print("PLACE_DONE\n");
 }
 
 void RobotArm::readCommand(const char* variable)
