@@ -221,10 +221,10 @@ void RobotArm::placeCommand(const char* q1, const char* q2, const char* q3, cons
   _abortRequested = false;
   robotManager.setServoTargetPosition(5, atoi(q5));
   robotManager.setServoTargetPosition(3, atoi(q3));
+  vTaskDelay(2000 / portTICK_PERIOD_MS);
   robotManager.setServoTargetPosition(2, atoi(q2));
   robotManager.setServoTargetPosition(1, atoi(q1));
-
-  vTaskDelay(4000 / portTICK_PERIOD_MS); // Small delay to ensure the arm is in the correct position before moving the last claw servo
+  vTaskDelay(3000 / portTICK_PERIOD_MS); // Small delay to ensure the arm is in the correct position before moving the last claw servo
 
   if (_abortRequested) {
     Serial.println("[PLACE] Movement aborted before moving Servo 6.");
@@ -232,9 +232,8 @@ void RobotArm::placeCommand(const char* q1, const char* q2, const char* q3, cons
     return;
   }
   robotManager.setServoTargetPosition(6, atoi(q6));
-
   // Wait for the claw servo to reach its position
-  vTaskDelay(2000 / portTICK_PERIOD_MS);
+  vTaskDelay(3000 / portTICK_PERIOD_MS);
 
   // Check if an abort was requested during the movement
   if (_abortRequested) {
@@ -255,7 +254,7 @@ void RobotArm::placeCommand(const char* q1, const char* q2, const char* q3, cons
   robotManager.setServoTargetPosition(3, robotManager.getPlacePosition(3));
   robotManager.setServoTargetPosition(5, robotManager.getPlacePosition(5));
 
-  vTaskDelay(3000 / portTICK_PERIOD_MS); // Wait for the arm to reach the place positions
+  vTaskDelay(2000 / portTICK_PERIOD_MS); // Wait for the arm to reach the place positions
 
   if (_abortRequested) {
     Serial.println("[PLACE] Movement to place positions aborted.");
@@ -267,8 +266,8 @@ void RobotArm::placeCommand(const char* q1, const char* q2, const char* q3, cons
   }
 
   // Open claw after placing to 130 degrees
-  robotManager.setServoTargetPosition(6, 130);
-  vTaskDelay(3000 / portTICK_PERIOD_MS);
+  robotManager.setServoTargetPosition(6, robotManager.getServoOffset(6));
+  vTaskDelay(2000 / portTICK_PERIOD_MS);
 
   // Return to offset positions after placing
   robotManager.setServoTargetPosition(1, robotManager.getServoOffset(1));
@@ -276,7 +275,7 @@ void RobotArm::placeCommand(const char* q1, const char* q2, const char* q3, cons
   robotManager.setServoTargetPosition(3, robotManager.getServoOffset(3));
   robotManager.setServoTargetPosition(4, robotManager.getServoOffset(4));
   robotManager.setServoTargetPosition(5, robotManager.getServoOffset(5));
-  robotManager.setServoTargetPosition(6, robotManager.getServoOffset(6));
+
   _isRunning = false;
   Serial.print("PLACE_DONE\n");
 }
